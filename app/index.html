@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: https: http:; connect-src 'self' http: https:; style-src 'self' 'unsafe-inline'; script-src 'self';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sun3D Pro</title>
+    <link rel="stylesheet" href="./styles/reset.css" />
+    <link rel="stylesheet" href="./styles/layout.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <div class="drag-region" data-draggable="true"></div>
+      <div class="sun-wrapper">
+        <canvas id="sun-canvas"></canvas>
+        <div id="hud" class="hud">
+          <div class="hud-section hud-primary">
+            <div class="hud-row" data-field="xray">X-ray: --</div>
+            <div class="hud-row" data-field="kp">Kp: --</div>
+            <div class="hud-row" data-field="vsw">Vsw: --</div>
+            <div class="hud-row" data-field="bz">Bz: --</div>
+            <div class="hud-row" data-field="stamp">Updated: --</div>
+          </div>
+          <div class="hud-section hud-controls">
+            <div class="hud-row controls" data-field="view">
+              <span class="label">View</span>
+              <button data-action="view" data-value="norm">norm</button>
+              <button data-action="view" data-value="hot">hot</button>
+              <button data-action="view" data-value="diff">diff</button>
+            </div>
+            <div class="hud-row controls" data-field="source">
+              <span class="label">Src</span>
+              <button data-action="source" data-value="auto">auto</button>
+              <button data-action="source" data-value="suvi">suvi</button>
+              <button data-action="source" data-value="sdo">sdo</button>
+            </div>
+            <div class="hud-row controls" data-field="band">
+              <span class="label">Band</span>
+              <button data-action="band" data-value="auto">auto</button>
+              <button data-action="band" data-value="171">171</button>
+              <button data-action="band" data-value="193">193</button>
+              <button data-action="band" data-value="304">304</button>
+            </div>
+            <div class="hud-row controls" data-field="side">
+              <span class="label">Side</span>
+              <button data-action="side" data-value="near">near</button>
+              <button data-action="side" data-value="far">far</button>
+              <button data-action="side" data-value="mix">mix</button>
+            </div>
+          </div>
+          <div class="hud-section hud-alerts">
+            <div class="hud-row" data-field="alerts">Alerts: none</div>
+            <div class="hud-row" data-field="cme">CME: none</div>
+          </div>
+          <div class="hud-section hud-planets">
+            <canvas id="planet-canvas" width="80" height="200"></canvas>
+            <div class="hud-row" data-field="planets">Planets</div>
+          </div>
+          <div class="hud-section hud-footer">
+            <button class="link" data-action="toggle-config">cfg</button>
+            <span class="hud-note">Expert tool – verify with official sources.</span>
+          </div>
+        </div>
+      </div>
+      <div id="config-panel" class="config-panel hidden">
+        <h2>Config</h2>
+        <form id="config-form">
+          <label>Width <input type="number" name="width" min="220" max="640" /></label>
+          <label>Height <input type="number" name="height" min="220" max="640" /></label>
+          <label>FPS <input type="number" name="fps" min="10" max="60" step="1" /></label>
+          <label>FOV <input type="number" name="fov" min="30" max="90" step="1" /></label>
+          <label>
+            Always on top
+            <input type="checkbox" name="alwaysOnTop" />
+          </label>
+          <label>
+            Hologram preset
+            <select name="preset">
+              <option value="off">off</option>
+              <option value="front">front</option>
+              <option value="cross">cross</option>
+            </select>
+          </label>
+          <label>
+            Hologram stream
+            <input type="checkbox" name="stream" />
+          </label>
+          <label>
+            WebRTC bridge
+            <input type="checkbox" name="webrtc" />
+          </label>
+          <button type="submit">Apply</button>
+        </form>
+      </div>
+    </div>
+    <script type="module" src="./scripts/renderer.js"></script>
+  </body>
+</html>
