@@ -25,18 +25,25 @@ A production-ready Electron widget that renders a live 3D Sun with a compact tel
 npm install
 ```
 
+The default install grabs only the runtime dependencies (`express`, `electron-store`, `three`, `ws`). Electron and
+`electron-builder` are listed as optional/peer dependencies so that a locked-down environment can skip them during the initial
+bootstrap.
+
 > **Windows PowerShell**: If you encounter script execution errors (e.g. when corporate policies block npm install hooks), launch
 > an elevated PowerShell prompt once and run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`. This preserves security defaults
 > while allowing the local tooling scripts that ship with Electron to execute.
 
 #### Restricted environments
 
-- Some enterprise networks flag the public `electron` package. When that happens, set `ELECTRON_SKIP_BINARY_DOWNLOAD=1` before
-  running `npm install` and manually place an approved Electron distribution under `node_modules/electron/` (the folder structure
-  expected by the launcher). Alternatively, configure `ELECTRON_OVERRIDE_DIST_URL` to point at an internally mirrored download
-  endpoint.
-- After installing, clear the environment variable or reinstall without it if you want `electron-builder` to fetch platform
-  archives automatically.
+- Mirror or sideload the core npm packages if outbound registry calls are blocked. Each dependency can be installed from a vetted
+  tarball via `npm install <path-to-tarball>`.
+- Provide an Electron runtime separately:
+  1. Download/approve an Electron build that matches the `>=28` peer requirement.
+  2. Place the unpacked binary under `vendor/electron/` (see `scripts/run-electron.js` for the expected filenames) **or** expose the
+     executable path through `ELECTRON_PATH`.
+  3. Optional: install the npm package later with `npm install electron --save-dev` once registry access is restored.
+- `electron-builder` is also optional. When packaging, install it ad-hoc (`npm install electron-builder --save-dev`) or provide an
+  offline mirror and re-run `npm run build`.
 
 ### Run in development
 
@@ -44,7 +51,9 @@ npm install
 npm start
 ```
 
-This launches the Electron widget and starts the internal data service automatically.
+The launcher resolves `electron` from your local install, an approved `vendor/electron` binary, or an `ELECTRON_PATH` override. If
+no executable can be found the script exits with guidance instead of a cryptic module error. The main process starts the data
+service automatically.
 
 ### Build distributables
 
@@ -52,7 +61,8 @@ This launches the Electron widget and starts the internal data service automatic
 npm run build
 ```
 
-Electron Builder is configured with defaults and can be customised via `electron-builder` options if packaging for Windows.
+If `electron-builder` is unavailable the helper script prints instructions for supplying it; once installed it executes the
+standard Electron Builder CLI so you can customise configuration as needed for Windows packaging.
 
 ## Application Structure
 
@@ -70,6 +80,7 @@ Electron Builder is configured with defaults and can be customised via `electron
 ├── hologram/            # Future network streaming bridge
 ├── main.js              # Electron entry point
 ├── preload.js           # Secure bridge (contextIsolation=true)
+├── scripts/             # Launch helpers for Electron and electron-builder
 ├── package.json
 └── README.md
 ```
