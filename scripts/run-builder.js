@@ -18,9 +18,8 @@ async function main() {
   if (!builderPath) {
     console.error(
       '\n⚠️  electron-builder is not installed.\n' +
-        'Install it with `npm install electron-builder --save-dev` when registry access is restored, sideload a tarball,\n' +
-        'or supply a vetted offline copy and expose its path via NODE_PATH. See the README for offline packaging guidance and the\n' +
-        'Windows execution policy note.\n'
+        'Install it with `npm install electron-builder --save-dev` when access to the registry is restored,\n' +
+        'or supply a vetted offline copy and expose its path via NODE_PATH.\n'
     );
     process.exitCode = 1;
     return;

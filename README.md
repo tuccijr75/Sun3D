@@ -9,7 +9,7 @@ A production-ready Electron widget that renders a live 3D Sun with a compact tel
 - **Active-region overlays** mapped from NOAA region feeds.
 - **Compact HUD** providing key metrics, alert summaries, CME risk, and planetary positions.
 - **Configurable widget** with quick controls for view/source/band/side modes and an inline configuration panel.
-- **Local data backend** (lightweight HTTP server) exposing `/snapshot`, `/alerts`, `/cme`, `/planets`, and `/markers` JSON endpoints.
+- **Local data backend** (Express) exposing `/snapshot`, `/alerts`, `/cme`, `/planets`, and `/markers` JSON endpoints.
 - **Hologram bridge stubs** prepared for LAN/WebRTC streaming without affecting the core widget when unused.
 
 ## Getting Started
@@ -25,22 +25,15 @@ A production-ready Electron widget that renders a live 3D Sun with a compact tel
 npm install
 ```
 
-The default install grabs only the runtime dependencies (`three`). Electron and
+The default install grabs only the runtime dependencies (`express`, `electron-store`, `three`, `ws`). Electron and
 `electron-builder` are listed as optional/peer dependencies so that a locked-down environment can skip them during the initial
 bootstrap.
 
-### programmingWindows PowerShell setup
+> **Windows PowerShell**: If you encounter script execution errors (e.g. when corporate policies block npm install hooks), launch
+> an elevated PowerShell prompt once and run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`. This preserves security defaults
+> while allowing the local tooling scripts that ship with Electron to execute.
 
-If you encounter script execution errors on Windows (common when corporate policies block npm install hooks), launch an elevated
-PowerShell prompt once and run:
-
-```powershell
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-```
-
-This preserves the default security posture while allowing the local tooling scripts that ship with Electron to execute.
-
-### Restricted environments
+#### Restricted environments
 
 - Mirror or sideload the core npm packages if outbound registry calls are blocked. Each dependency can be installed from a vetted
   tarball via `npm install <path-to-tarball>`.
@@ -105,11 +98,11 @@ standard Electron Builder CLI so you can customise configuration as needed for W
   - Window width/height, FPS target, field-of-view.
   - Always-on-top toggle.
   - Hologram preset, streaming toggle, WebRTC toggle.
-  - Settings persist via the bundled JSON-backed store (`utils/persistentStore.js`).
+  - Settings persist via `electron-store`.
 
 ## Data Service
 
-The data service spins up automatically from `main.js` on a random local port (loopback only). Endpoints:
+The Express server is started automatically by `main.js` on a random local port (loopback only). Endpoints:
 
 - `GET /snapshot`
   - Returns `{ generatedAt, images, metrics, pulse, markers }`.
@@ -163,7 +156,7 @@ Extend this module to integrate WebSocket or WebRTC broadcast mechanisms. The re
 ## Extending
 
 - Add more HUD rows or visual overlays by editing `app/scripts/renderer.js` and `app/index.html`.
-- Integrate additional endpoints or telemetry sources in `backend/services/solarSources.js` and expose them via the data service + the preload bridge.
+- Integrate additional endpoints or telemetry sources in `backend/services/solarSources.js` and expose them via Express + the preload bridge.
 - Flesh out hologram/WebRTC broadcasting inside `hologram/hologramBridge.js`.
 
 ## License

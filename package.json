@@ -18,7 +18,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "three": "^0.160.0"
+    "electron-store": "^8.1.0",
+    "express": "^4.19.2",
+    "three": "^0.160.0",
+    "ws": "^8.16.0"
   },
   "optionalDependencies": {
     "electron": "^28.2.3",

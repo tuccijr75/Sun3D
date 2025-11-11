@@ -1,12 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const PersistentStore = require('./utils/persistentStore');
+const Store = require('electron-store');
 const { createDataService } = require('./backend/services/dataService');
 const { createHologramBridge } = require('./hologram/hologramBridge');
 
-const store = new PersistentStore({
+const store = new Store({
   name: 'sun3d-pro',
-  logger: createLogger('Store'),
   defaults: {
     window: {
       width: 280,

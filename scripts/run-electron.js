@@ -45,9 +45,8 @@ async function main() {
   if (!electronPath) {
     console.error(
       '\n⚠️  Electron is not installed.\n' +
-        'Install it with `npm install electron --save-dev` when registry access is restored, sideload a tarball, or drop a vetted\n' +
-        'binary under `vendor/electron/` and set ELECTRON_PATH accordingly. Windows users may need to run\n' +
-        '`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once (see README.md).\n'
+        'Install it with `npm install electron --save-dev` once access to the package registry is available,\n' +
+        'or drop a vetted binary under `vendor/electron/` and set ELECTRON_PATH to that executable.\n'
     );
     process.exitCode = 1;
     return;
