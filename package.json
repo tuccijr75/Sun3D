@@ -1,0 +1,30 @@
+{
+  "name": "sun3d-pro",
+  "version": "1.0.0",
+  "description": "Sun3D Pro - Live solar activity hologram-ready widget",
+  "main": "main.js",
+  "scripts": {
+    "start": "node scripts/run-electron.js",
+    "dev": "node scripts/run-electron.js",
+    "lint": "echo 'No lint configured'",
+    "build": "node scripts/run-builder.js"
+  },
+  "keywords": [
+    "electron",
+    "threejs",
+    "solar",
+    "widget"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "optionalDependencies": {
+    "electron": "^28.2.3",
+    "electron-builder": "^24.9.1"
+  },
+  "peerDependencies": {
+    "electron": ">=28"
+  }
+}
